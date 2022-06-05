@@ -1,5 +1,5 @@
 -module(gol).
--export([new/2, query/3, assign/4, print/1, draw/1, demo/0, count/3, logic/2, step/3, simulate/1]).
+-export([new/2, query/3, assign/4, print/1, draw/1, demo/0, count/3, logic/2, step/3, simulate/1, clear/0, finish/0, run/2]).
 
 % new: Neues Board erstellen
 % query: Status einer Zelle abfragen
@@ -10,8 +10,10 @@
 % simulation: Eine Generation weitergehen
 % run: Mehrere Generationen weitergehen
 % demo: Demo Board erstellen
-% count: Nachbarn zählen#
+% count: Nachbarn zählen
 % logic: Zelle verändern
+% clear: Bildschirm leeren
+% finish: Simulation fertigstellen
 
 -record(grid, {height=20, width=20, rows}).
 -record(transition, {y, x, state}).
@@ -98,3 +100,19 @@ demo() ->
     G3 = assign(G2, 2, 2, alive),
     G4 = assign(G3, 2, 3, alive),
     assign(G4, 2, 4, alive).
+
+clear() ->
+    io:format("\ec").
+
+run(G, N) ->
+    clear(),
+    U = simulate(G),
+    print(U),
+    timer:sleep(500),
+    case N > 0 of
+        true -> run(U, N-1);
+        false -> finish()
+    end.
+
+finish() ->
+    io:format("~nFertig!").
