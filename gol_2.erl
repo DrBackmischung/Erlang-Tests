@@ -1,4 +1,4 @@
--module(gol).
+-module(gol_2).
 -compile(export_all).
 
 lives(2,true) ->
